@@ -2,6 +2,16 @@ using System.Linq;
 using AutoFixture;
 using AutoFixture.AutoMoq;
 
+using AutoMapper;
+
+using HiringManagementSystem.Application.Profiles;
+using HiringManagementSystem.Domain.Aggregations.PersonAggregate;
+using HiringManagementSystem.Domain.Frameworks.Base;
+
+using Microsoft.Extensions.DependencyInjection;
+
+using Moq;
+
 namespace HiringManagementSystem.Tests
 {
     public class TestFixture
@@ -10,6 +20,13 @@ namespace HiringManagementSystem.Tests
         public TestFixture()
         {
             AutoFixture = ConfigurationAutoDataAttribute();
+
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new AutoMapperProfile());
+            }).CreateMapper();
+
+            AutoFixture.Register<IMapper>(() => mappingConfig);
         }
 
         public static IFixture ConfigurationAutoDataAttribute()
