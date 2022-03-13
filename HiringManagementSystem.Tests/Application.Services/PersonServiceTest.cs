@@ -8,7 +8,6 @@ using Moq;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Xunit;
 
 namespace HiringManagementSystem.Tests.Application.Services
@@ -20,9 +19,9 @@ namespace HiringManagementSystem.Tests.Application.Services
         public PersonServiceTest()
         {
             People = AutoFixture.CreateMany<Person>(10);
+            
+
             var mockRepository = AutoFixture.Freeze<Mock<IPersonRepository>>();
-
-
             var mockMapper = AutoFixture.Freeze<Mock<IMapper>>();
 
             mockRepository.Setup(m => m.GetAllAsync())

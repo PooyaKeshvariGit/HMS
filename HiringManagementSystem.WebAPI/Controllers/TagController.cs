@@ -66,7 +66,7 @@ namespace HiringManagementSystem.WebAPI.Controllers
         #endregion
 
         #region [-GetTagByIdAsync(Guid id)-]
-        [Route("wapi/Tag/GetTagByIdAsync")]
+        [HttpGet("wapi/Tag/GetTagByIdAsync")]
         public async Task<IActionResult> GetTagByIdAsync(Guid id)
         {
             var tag = await Service.GetByIdAsync(id);
@@ -76,7 +76,7 @@ namespace HiringManagementSystem.WebAPI.Controllers
         #endregion
 
         #region [-SearchByTagNameAsync(string tagName)-]
-        [Route("wapi/Tag/SearchByTagNameAsync")]
+        [HttpGet("wapi/Tag/SearchByTagNameAsync")]
         public async Task<TagDto> SearchByTagNameAsync(string tagName)
         {
             var tag = await Service.SearchByTagNameAsync(tagName);

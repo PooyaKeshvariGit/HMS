@@ -69,7 +69,7 @@ namespace HiringManagementSystem.WebAPI.Controllers
         #endregion
 
         #region [-GetPersonByIdAsync(Guid id)-]
-        [Route("wapi/Person/GetPersonById")]
+        [HttpGet("wapi/Person/GetPersonById")]
         public async Task<PersonDto> GetPersonByIdAsync(Guid id)
         {
             var person = await Service.GetByIdAsync(id);
@@ -80,7 +80,7 @@ namespace HiringManagementSystem.WebAPI.Controllers
 
 
         #region [-SearchTagByFamilyAsync(string family)-]
-        [Route("wapi/Person/SearchTagByFamily")]
+        [HttpGet("wapi/Person/SearchTagByFamily")]
         public async Task<IActionResult> SearchTagByFamilyAsync(string family)
         {
             var person = await Service.SearchTagByFamilyAsync(family);
@@ -89,9 +89,9 @@ namespace HiringManagementSystem.WebAPI.Controllers
 
         #endregion
 
-        #region [-SearchAsyncByNationalId(string nationalId)-]
-        [Route("wapi/Person/SearchAsyncByNationalId")]
-        public async Task<PersonDto> SearchAsyncByNationalId(string nationalId)
+        #region [-SearchByNationalIdAsync(string nationalId)-]
+        [HttpGet("wapi/Person/SearchByNationalIdAsync")]
+        public async Task<PersonDto> SearchByNationalIdAsync(string nationalId)
         {
             var person = await Service.SearchByNationalIdAsync(nationalId);
             return person;
@@ -100,8 +100,7 @@ namespace HiringManagementSystem.WebAPI.Controllers
         #endregion
 
         #region [-SearchPersonBytagAsync(string tagName)-]
-        [Route("wapi/Person/SearchPersonBytagAsync")]
-        [HttpGet]
+        [HttpGet("wapi/Person/SearchPersonBytagAsync")]
         public async Task<List<PersonDto>> SearchPersonBytagNameAsync(string tagName)
         {
             var person = await Service.SearchPersonBytagNameAsync(tagName);
