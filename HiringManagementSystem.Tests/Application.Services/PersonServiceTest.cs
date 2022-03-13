@@ -1,20 +1,14 @@
 ﻿using AutoFixture;
 using AutoFixture.Xunit2;
-
-using AutoMapper;
-
 using HiringManagementSystem.Application.Dtos;
 using HiringManagementSystem.Application.Services;
 using HiringManagementSystem.Domain.Aggregations.PersonAggregate;
 using HiringManagementSystem.Domain.Repositories;
-
 using Moq;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Xunit;
 
 namespace HiringManagementSystem.Tests.Application.Services
@@ -48,7 +42,7 @@ namespace HiringManagementSystem.Tests.Application.Services
             //        }).ToList();
             //    });
 
-        } 
+        }
 
         #endregion
 
@@ -143,18 +137,53 @@ namespace HiringManagementSystem.Tests.Application.Services
 
         #endregion
 
-        #region [-Should_Update_Person(CreatePersonDto dto)-]
-
-        public async Task Should_Update_Person(CreatePersonDto dto)
+        #region [-Should_Update_Person(UpdatePersonDto dto)-]
+        [Theory]
+        [AutoData]
+        public async Task Should_Update_Person(Guid id, UpdatePersonDto dto)
         {
+            //Arrange
+
+            Person actualUpdatePerson = null;
+            MockRepository.Setup(m => m.GetByIdAsync(id))
+            .Returns(Task.FromResult(People.First()));
+
+            MockRepository.Setup(m => m.UpdateAsync(It.IsAny<Person>()))
+                .Callback<Person>(person => actualUpdatePerson = person);
+
+            var sut = AutoFixture.Create<PersonAppService>();
+
+            //Act
+            await sut.UpdateAsync(id, dto);
+
+            //Assert
+            Assert.Equal(dto.FirstName, actualUpdatePerson.FirstName);
+            Assert.Equal(dto.Family, actualUpdatePerson.Family);
+            Assert.Equal(dto.BirthDate, actualUpdatePerson.BirthDate);
+            Assert.Equal(dto.NationalId, actualUpdatePerson.NationalId);
 
         }
 
         #endregion
 
-        #region [--]
+        #region [-Should_Delete_Person(Guid id)-] 
+        [Theory]
+        [AutoData]
+        public async Task Should_Delete_Person(Guid id)
+        {
+            //Arrange
+            Guid actualId = new Guid();
+            MockRepository.Setup(m => m.DeleteAsync(It.IsAny<Guid>()))
+                .Callback<Guid>(id => actualId = id);
 
+            var sut = AutoFixture.Create<PersonAppService>();
+            //Act
+            await sut.DeleteAsync(id);
 
+            //Assert
+            Assert.Equal(id, actualId);
+
+        }
 
         #endregion
     }
