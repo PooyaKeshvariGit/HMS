@@ -21,14 +21,18 @@ namespace HiringManagementSystem.Tests.Application.Services
 {
     public class PersonServiceTest : TestFixture
     {
+        #region [-Props-]
         public IEnumerable<Person> People { get; set; }
-        private readonly Mock<IPersonRepository> mockRepository;
+        public Mock<IPersonRepository> MockRepository { get; set; }
+        #endregion
+
+        #region [-Ctor-]
 
         public PersonServiceTest()
         {
             People = AutoFixture.CreateMany<Person>(10);
 
-            mockRepository = AutoFixture.Freeze<Mock<IPersonRepository>>();
+            MockRepository = AutoFixture.Freeze<Mock<IPersonRepository>>();
             //var mockMapper = AutoFixture.Freeze<Mock<IMapper>>();
 
             //mockMapper.Setup(m => m.Map<List<PersonDto>>(It.IsAny<List<Person>>()))
@@ -44,18 +48,21 @@ namespace HiringManagementSystem.Tests.Application.Services
             //        }).ToList();
             //    });
 
-        }
+        } 
+
+        #endregion
 
         #region [-Should_Get_All_Persons()-]
+
         [Fact]
         public async Task Should_Get_All_Persons()
         {
             //Arrange
-            mockRepository.Setup(m => m.GetAllAsync())
+            MockRepository.Setup(m => m.GetAllAsync())
                 .Returns(() => Task.FromResult(People.ToList()));
 
             var sut = AutoFixture.Create<PersonAppService>();
-            
+
             //Act
             var result = await sut.GetAllAsync();
 
@@ -71,9 +78,11 @@ namespace HiringManagementSystem.Tests.Application.Services
                 Assert.Equal(dto.NationalId, person.NationalId);
             }
         }
+
         #endregion
 
-        #region [-Should_Create_Person(PersonDto dto)-]
+        #region [-Should_Create_Person_With_Tags(PersonDto dto)-]
+
         [Theory]
         [AutoData]
         public async Task Should_Create_Person_With_Tags(CreatePersonDto dto)
@@ -81,7 +90,7 @@ namespace HiringManagementSystem.Tests.Application.Services
             //Arrange
             Person actualCreatedPerson = null;
 
-            mockRepository.Setup(m => m.CreateAsync(It.IsAny<Person>()))
+            MockRepository.Setup(m => m.CreateAsync(It.IsAny<Person>()))
                 .Callback<Person>(person => actualCreatedPerson = person);
 
             var sut = AutoFixture.Create<PersonAppService>();
@@ -106,6 +115,7 @@ namespace HiringManagementSystem.Tests.Application.Services
 
         #endregion
 
+        #region [-Should_Create_Person_Without_Tags(CreatePersonDto dto)-]
 
         [Theory]
         [AutoData]
@@ -114,7 +124,7 @@ namespace HiringManagementSystem.Tests.Application.Services
             //Arrange
             Person actualCreatedPerson = null;
             dto.Tags = null;
-            mockRepository.Setup(m => m.CreateAsync(It.IsAny<Person>()))
+            MockRepository.Setup(m => m.CreateAsync(It.IsAny<Person>()))
                 .Callback<Person>(person => actualCreatedPerson = person);
 
             var sut = AutoFixture.Create<PersonAppService>();
@@ -131,5 +141,21 @@ namespace HiringManagementSystem.Tests.Application.Services
             Assert.Empty(actualCreatedPerson.Tags);
         }
 
+        #endregion
+
+        #region [-Should_Update_Person(CreatePersonDto dto)-]
+
+        public async Task Should_Update_Person(CreatePersonDto dto)
+        {
+
+        }
+
+        #endregion
+
+        #region [--]
+
+
+
+        #endregion
     }
 }
