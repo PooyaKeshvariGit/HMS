@@ -283,44 +283,51 @@ namespace HiringManagementSystem.Tests.Application.Services
 
         #region [-Should_Get_Person_By_TagName(bool exptectedFound,string tagName)-]
 
-        //[Theory]
-        //[AutoData]
-        //[InlineAutoData(false)]
-        //[InlineAutoData(true)]
-        //public async Task Should_Get_Person_By_TagName(bool exptectedFound, string tagName)
-        //{
-        //    //Arrange
-        //    MockRepository.Setup(m => m.SearchPersonByTagNameAsync(It.IsAny<string>()))
-        //        .Returns<string>(f => Task.FromResult(People.Where(x => x.Tags.Any(t => t.TagName.Contains(tagName)))));
-        //    if (exptectedFound)
-        //    {
-        //        People.Last(). = "lafskdjlkfsadj ljl lsadfj" + tagName + "lafsdkjlkdsjlfdkjalj";
-        //    }
+        [Theory]
+        [InlineAutoData(0)]
+        [InlineAutoData(4)]
+        public async Task Should_Get_Person_By_TagName(int exptectedFoundCount, string tagName)
+        {
+            //Arrange
+            MockRepository.Setup(m => m.SearchPersonByTagNameAsync(It.IsAny<string>()))
+                .Returns<string>(f => Task.FromResult(People.Where(x => x.Tags.Any(t => t.TagName.Contains(tagName))).ToList()));
+            if (exptectedFoundCount > 0)
+            {
+                for (int i = 0; i < exptectedFoundCount; i++)
+                {
+                     People.ToList()[i].Tags.Last().TagName = "lafskdjlkfsadj ljl lsadfj" + tagName + "lafsdkjlkdsjlfdkjalj";
+                }
+            }
 
-        //    var sut = AutoFixture.Create<PersonAppService>();
+            var sut = AutoFixture.Create<PersonAppService>();
 
-        //    //Act
-        //    var result = await sut.SearchPersonByTagNameAsync(tagName);
+            //Act
+            var result = await sut.SearchPersonByTagNameAsync(tagName);
 
-        //    //Assert
-        //    if (exptectedFound)
-        //    {
-        //        var expectedPerson = People.FirstOrDefault(p => p.Tags.Any(t => t.TagName.Contains(tagName)));
+            //Assert
+            if (exptectedFoundCount > 0)
+            {
+                Assert.Equal(exptectedFoundCount, result.Count);
 
-        //        Assert.NotNull(result);
-        //        Assert.Equal(expectedPerson.Family, result.Family);
-        //        Assert.Equal(expectedPerson.FirstName, result.FirstName);
-        //        Assert.Equal(expectedPerson.BirthDate, result.BirthDate);
-        //        Assert.Equal(expectedPerson.NationalId, result.NationalId);
-        //        Assert.Equal(expectedPerson.Id, result.Id);
-        //    }
-        //    else
-        //    {
-        //        Assert.Null(result);
-        //    }
+                foreach (var expectedPerson in People.Where(p => p.Tags.Any(t => t.TagName.Contains(tagName))))
+                {
+                    var actualPerson = result.FirstOrDefault(p => p.Id == expectedPerson.Id);
+
+                    Assert.NotNull(actualPerson);
+
+                    Assert.Equal(expectedPerson.Family, actualPerson.Family);
+                    Assert.Equal(expectedPerson.FirstName, actualPerson.FirstName);
+                    Assert.Equal(expectedPerson.BirthDate, actualPerson.BirthDate);
+                    Assert.Equal(expectedPerson.NationalId, actualPerson.NationalId);
+                }
+            }
+            else
+            {
+                Assert.Empty(result);
+            }
 
 
-        //}
+        }
 
         #endregion
 
