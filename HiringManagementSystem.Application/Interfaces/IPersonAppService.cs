@@ -17,6 +17,6 @@ namespace HiringManagementSystem.Application.Interfaces
         //Special Tasks
         Task<PersonDto> SearchTagByFamilyAsync(string family);
         Task<PersonDto> SearchByNationalIdAsync(string nationalId);
-        Task<List<PersonDto>> SearchPersonBytagNameAsync(string tagName);
+        Task<List<PersonDto>> SearchPersonByTagNameAsync(string tagName);
     }
 }

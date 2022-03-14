@@ -46,6 +46,8 @@ namespace HiringManagementSystem.Tests.Application.Services
 
         #endregion
 
+        #region [-Tests-]
+
         #region [-Should_Get_All_Persons()-]
 
         [Fact]
@@ -94,6 +96,7 @@ namespace HiringManagementSystem.Tests.Application.Services
 
             //Assert
             Assert.NotNull(actualCreatedPerson);
+
             Assert.Equal(dto.FirstName, actualCreatedPerson.FirstName);
             Assert.Equal(dto.Family, actualCreatedPerson.Family);
             Assert.Equal(dto.BirthDate, actualCreatedPerson.BirthDate);
@@ -138,6 +141,7 @@ namespace HiringManagementSystem.Tests.Application.Services
         #endregion
 
         #region [-Should_Update_Person(UpdatePersonDto dto)-]
+
         [Theory]
         [AutoData]
         public async Task Should_Update_Person(Guid id, UpdatePersonDto dto)
@@ -167,6 +171,7 @@ namespace HiringManagementSystem.Tests.Application.Services
         #endregion
 
         #region [-Should_Delete_Person(Guid id)-] 
+
         [Theory]
         [AutoData]
         public async Task Should_Delete_Person(Guid id)
@@ -184,6 +189,77 @@ namespace HiringManagementSystem.Tests.Application.Services
             Assert.Equal(id, actualId);
 
         }
+
+        #endregion
+
+        #region [-Should_Get_Person_By_Family(string family)-]
+
+        [Theory]
+        [AutoData]
+        public async Task Should_Get_Person_By_Family(string family)
+        {
+            //Arrange
+            string actualFamily = null;
+            MockRepository.Setup(m => m.SearchTagByFamilyAsync(It.IsAny<string>()))
+                .Callback<string>(personFamily => actualFamily = personFamily);
+
+            var sut = AutoFixture.Create<PersonAppService>();
+
+            //Act
+            var result = await sut.SearchTagByFamilyAsync(family);
+
+            //Assert
+            Assert.Equal(result.Family, actualFamily);
+            
+        }
+
+        #endregion
+
+        #region [-Should_Get_Person_By_NationalId(string nationalId)-]
+
+        [Theory]
+        [AutoData]
+        public async Task Should_Get_Person_By_NationalId(string nationalId)
+        {
+            //Arrange
+            string actualNationalId = null;
+            MockRepository.Setup(m => m.SearchByNationalIdAsync(It.IsAny<string>()))
+                .Callback<string>(personNational => actualNationalId = personNational);
+            var sut = AutoFixture.Create<PersonAppService>();
+
+            //Act
+            var result = await sut.SearchByNationalIdAsync(nationalId);
+
+            //Assert
+            Assert.Equal(result.NationalId, actualNationalId);
+
+        }
+
+        #endregion
+
+        #region [-Should_Get_Person_By_TagName(string tagName)-]
+
+        [Theory]
+        [AutoData]
+        public async Task Should_Get_Person_By_TagName(string tagName)
+        {
+            //Arrange
+            string actualTagName = null;
+            MockRepository.Setup(m => m.SearchPersonByTagNameAsync(It.IsAny<string>()))
+                .Callback<string>(personTagName => actualTagName = personTagName);
+
+            var sut = AutoFixture.Create<PersonAppService>();
+
+            //Act
+            await sut.SearchPersonByTagNameAsync(tagName);
+
+            //Assert
+            Assert.Equal(tagName, actualTagName);
+
+
+        }
+
+        #endregion
 
         #endregion
     }

@@ -37,9 +37,9 @@ namespace HiringManagementSystem.EntityFrameworkCore.Services
 
         #endregion
 
-        #region [-SearchPersonBytagNameAsync(string tagName)-]
+        #region [-SearchPersonByTagNameAsync(string tagName)-]
 
-        public async Task<List<Person>> SearchPersonBytagNameAsync(string tagName)
+        public async Task<List<Person>> SearchPersonByTagNameAsync(string tagName)
         {
             var personTags = await DbSet.Where(x => x.Tags.Any(t => t.TagName.Contains(tagName))).ToListAsync();
             return personTags;

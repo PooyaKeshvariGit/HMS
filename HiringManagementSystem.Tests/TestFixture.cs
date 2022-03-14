@@ -1,16 +1,8 @@
 using System.Linq;
 using AutoFixture;
 using AutoFixture.AutoMoq;
-
 using AutoMapper;
-
 using HiringManagementSystem.Application.Profiles;
-using HiringManagementSystem.Domain.Aggregations.PersonAggregate;
-using HiringManagementSystem.Domain.Frameworks.Base;
-
-using Microsoft.Extensions.DependencyInjection;
-
-using Moq;
 
 namespace HiringManagementSystem.Tests
 {

@@ -101,9 +101,9 @@ namespace HiringManagementSystem.WebAPI.Controllers
 
         #region [-SearchPersonBytagAsync(string tagName)-]
         [HttpGet("wapi/Person/SearchPersonBytagAsync")]
-        public async Task<List<PersonDto>> SearchPersonBytagNameAsync(string tagName)
+        public async Task<List<PersonDto>> SearchPersonByTagNameAsync(string tagName)
         {
-            var person = await Service.SearchPersonBytagNameAsync(tagName);
+            var person = await Service.SearchPersonByTagNameAsync(tagName);
             return person;
         }
 

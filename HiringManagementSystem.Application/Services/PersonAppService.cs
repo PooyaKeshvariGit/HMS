@@ -38,7 +38,6 @@ namespace HiringManagementSystem.Application.Services
 
         public async Task CreateAsync(CreatePersonDto personDto)
         {
-            Mapper.Map<List<Tag>>(personDto.Tags);
             var person = Mapper.Map<Person>(personDto);
 
             await Repository.CreateAsync(person);
@@ -101,11 +100,11 @@ namespace HiringManagementSystem.Application.Services
 
         #endregion
 
-        #region [-SearchPersonBytagNameAsync(string tagName)-]
+        #region [-SearchPersonByTagNameAsync(string tagName)-]
 
-        public async Task<List<PersonDto>> SearchPersonBytagNameAsync(string tagName)
+        public async Task<List<PersonDto>> SearchPersonByTagNameAsync(string tagName)
         {
-            var person = await Repository.SearchPersonBytagNameAsync(tagName);
+            var person = await Repository.SearchPersonByTagNameAsync(tagName);
             return Mapper.Map<List<PersonDto>>(person);
         }
 

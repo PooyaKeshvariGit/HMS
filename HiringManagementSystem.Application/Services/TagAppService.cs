@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HiringManagementSystem.Application.Interfaces;
+using HiringManagementSystem.Domain.Aggregations.TagAggregate;
 
 namespace HiringManagementSystem.Application.Services
 {
@@ -36,9 +37,9 @@ namespace HiringManagementSystem.Application.Services
 
         public async Task CreateAsync(CreateTagDto tagDto)
         {
-            var preparedTag = await Factory.PrepareTagAsync(tagDto.TagName,tagDto.Description,tagDto.PersonId);
+            var preparedTag = Mapper.Map<Tag>(tagDto);
             await Repository.CreateAsync(preparedTag);
-            Mapper.Map<TagDto>(preparedTag);
+            
         }
 
         #endregion
@@ -88,7 +89,7 @@ namespace HiringManagementSystem.Application.Services
 
         #endregion
 
-        #region [-SearchAsyncBy(string tagName)-]
+        #region [-SearchByTagNameAsync(string tagName)-]
 
         public async Task<TagDto> SearchByTagNameAsync(string tagName)
         {

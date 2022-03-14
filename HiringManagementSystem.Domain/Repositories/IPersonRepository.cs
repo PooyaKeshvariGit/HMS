@@ -13,6 +13,6 @@ namespace HiringManagementSystem.Domain.Repositories
     {
         Task<Person> SearchTagByFamilyAsync(string family);
         Task<Person> SearchByNationalIdAsync(string nationalId);
-        Task<List<Person>> SearchPersonBytagNameAsync(string tagName);
+        Task<List<Person>> SearchPersonByTagNameAsync(string tagName);
     }
 }
