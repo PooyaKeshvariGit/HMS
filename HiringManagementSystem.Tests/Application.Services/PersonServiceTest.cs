@@ -31,21 +31,6 @@ namespace HiringManagementSystem.Tests.Application.Services
             People = AutoFixture.CreateMany<Person>(10);
 
             MockRepository = AutoFixture.Freeze<Mock<IPersonRepository>>();
-            //var mockMapper = AutoFixture.Freeze<Mock<IMapper>>();
-
-            //mockMapper.Setup(m => m.Map<List<PersonDto>>(It.IsAny<List<Person>>()))
-            //    .Returns<List<Person>>(persons =>
-            //    {
-            //        return persons.Select(person => new PersonDto
-            //        {
-            //            Id = person.Id,
-            //            FirstName = person.FirstName,
-            //            Family = person.Family,
-            //            BirthDate = person.BirthDate,
-            //            NationalId = person.NationalId
-            //        }).ToList();
-            //    });
-
         }
 
         #endregion
@@ -295,7 +280,7 @@ namespace HiringManagementSystem.Tests.Application.Services
             {
                 for (int i = 0; i < exptectedFoundCount; i++)
                 {
-                     People.ToList()[i].Tags.Last().TagName = "lafskdjlkfsadj ljl lsadfj" + tagName + "lafsdkjlkdsjlfdkjalj";
+                    People.ToList()[i].Tags.Last().TagName = "lafskdjlkfsadj ljl lsadfj" + tagName + "lafsdkjlkdsjlfdkjalj";
                 }
             }
 
