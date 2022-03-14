@@ -3,7 +3,6 @@ using HiringManagementSystem.Domain.Factories.Interfaces;
 using HiringManagementSystem.Domain.Repositories;
 using System;
 using System.Threading.Tasks;
-using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace HiringManagementSystem.Domain.Factories.Base
 {

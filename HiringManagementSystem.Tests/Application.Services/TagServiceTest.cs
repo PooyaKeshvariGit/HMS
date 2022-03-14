@@ -1,18 +1,14 @@
 ﻿using AutoFixture;
 using AutoFixture.Xunit2;
-
 using HiringManagementSystem.Application.Dtos;
 using HiringManagementSystem.Application.Services;
 using HiringManagementSystem.Domain.Aggregations.TagAggregate;
 using HiringManagementSystem.Domain.Repositories;
-
 using Moq;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Xunit;
 
 namespace HiringManagementSystem.Tests.Application.Services

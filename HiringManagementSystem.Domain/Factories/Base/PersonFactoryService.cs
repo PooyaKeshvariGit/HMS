@@ -6,8 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using TanvirArjel.Extensions.Microsoft.DependencyInjection;
-
 namespace HiringManagementSystem.Domain.Factories.Base
 {
     public class PersonFactoryService : IPersonFactoryService

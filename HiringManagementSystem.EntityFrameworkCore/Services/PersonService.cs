@@ -1,10 +1,7 @@
 ﻿using HiringManagementSystem.Domain.Aggregations.PersonAggregate;
-using HiringManagementSystem.Domain.Aggregations.TagAggregate;
 using HiringManagementSystem.Domain.Repositories;
 using HiringManagementSystem.EntityFrameworkCore.Frameworks.Base;
-
 using Microsoft.EntityFrameworkCore;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
