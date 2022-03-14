@@ -145,20 +145,39 @@ namespace HiringManagementSystem.Tests.Application.Services
 
         [Theory]
         [AutoData]
-        public async Task Should_Get_Tag_By_TagName(string tagName)
+        [InlineAutoData(false)]
+        [InlineAutoData(true)]
+        public async Task Should_Get_Tag_By_TagName(bool exptectedFound , string tagName)
         {
             //Arrange
-            string actualTagName = null;
             MockRepository.Setup(m => m.SearchByTagNameAsync(It.IsAny<string>()))
-                .Callback<string>(tag => actualTagName = tag);
+                .Returns<string>(f => Task.FromResult(Tags.FirstOrDefault(p => p.TagName.Contains(f))));
+
+            if (exptectedFound)
+            {
+                Tags.Last().TagName = "lafskdjlkfsadj ljl lsadfj" + tagName + "lafsdkjlkdsjlfdkjalj";
+            }
 
             var sut = AutoFixture.Create<TagAppService>();
 
             //Act
-            await sut.SearchByTagNameAsync(tagName);
+            var result = await sut.SearchByTagNameAsync(tagName);
 
             //Assert
-            Assert.Equal(tagName, actualTagName);
+            if (exptectedFound)
+            {
+                var expectedTag = Tags.FirstOrDefault(p => p.TagName.Contains(tagName));
+
+                Assert.NotNull(result);
+                Assert.Equal(expectedTag.TagName, result.TagName);
+                Assert.Equal(expectedTag.Description, result.Description);
+                Assert.Equal(expectedTag.PersonId, result.PersonId);
+                Assert.Equal(expectedTag.Id, result.Id);
+            }
+            else
+            {
+                Assert.Null(result);
+            }
 
 
         }

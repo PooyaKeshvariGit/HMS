@@ -1,14 +1,18 @@
 ﻿using AutoFixture;
 using AutoFixture.Xunit2;
+
 using HiringManagementSystem.Application.Dtos;
 using HiringManagementSystem.Application.Services;
 using HiringManagementSystem.Domain.Aggregations.PersonAggregate;
 using HiringManagementSystem.Domain.Repositories;
+
 using Moq;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Xunit;
 
 namespace HiringManagementSystem.Tests.Application.Services
@@ -192,16 +196,20 @@ namespace HiringManagementSystem.Tests.Application.Services
 
         #endregion
 
-        #region [-Should_Get_Person_By_Family(string family)-]
+        #region [-Should_Get_Person_By_Family(bool exptectedFound,string family)-]
 
         [Theory]
-        [AutoData]
-        public async Task Should_Get_Person_By_Family(string family)
+        [InlineAutoData(false)]
+        [InlineAutoData(true)]
+        public async Task Should_Get_Person_By_Family(bool exptectedFound, string family)
         {
             //Arrange
-            string actualFamily = null;
             MockRepository.Setup(m => m.SearchTagByFamilyAsync(It.IsAny<string>()))
-                .Callback<string>(personFamily => actualFamily = personFamily);
+                .Returns<string>(f => Task.FromResult(People.FirstOrDefault(p => p.Family.Contains(f))));
+            if (exptectedFound)
+            {
+                People.Last().Family = "lafskdjlkfsadj ljl lsadfj" + family + "lafsdkjlkdsjlfdkjalj";
+            }
 
             var sut = AutoFixture.Create<PersonAppService>();
 
@@ -209,55 +217,110 @@ namespace HiringManagementSystem.Tests.Application.Services
             var result = await sut.SearchTagByFamilyAsync(family);
 
             //Assert
-            Assert.Equal(result.Family, actualFamily);
-            
+            if (exptectedFound)
+            {
+                var expectedPerson = People.FirstOrDefault(p => p.Family.Contains(family));
+
+                Assert.NotNull(result);
+
+                Assert.Equal(expectedPerson.Family, result.Family);
+                Assert.Equal(expectedPerson.FirstName, result.FirstName);
+                Assert.Equal(expectedPerson.BirthDate, result.BirthDate);
+                Assert.Equal(expectedPerson.NationalId, result.NationalId);
+                Assert.Equal(expectedPerson.Id, result.Id);
+            }
+            else
+            {
+                Assert.Null(result);
+            }
+
         }
 
         #endregion
 
-        #region [-Should_Get_Person_By_NationalId(string nationalId)-]
+        #region [-Should_Get_Person_By_NationalId(bool exptectedFound,string nationalId)-]
 
         [Theory]
         [AutoData]
-        public async Task Should_Get_Person_By_NationalId(string nationalId)
+        [InlineAutoData(false)]
+        [InlineAutoData(true)]
+        public async Task Should_Get_Person_By_NationalId(bool exptectedFound, string nationalId)
         {
             //Arrange
-            string actualNationalId = null;
             MockRepository.Setup(m => m.SearchByNationalIdAsync(It.IsAny<string>()))
-                .Callback<string>(personNational => actualNationalId = personNational);
+                .Returns<string>(f => Task.FromResult(People.FirstOrDefault(p => p.NationalId.Contains(f))));
+            if (exptectedFound)
+            {
+                People.Last().NationalId = "lafskdjlkfsadj ljl lsadfj" + nationalId + "lafsdkjlkdsjlfdkjalj";
+            }
+
             var sut = AutoFixture.Create<PersonAppService>();
 
             //Act
             var result = await sut.SearchByNationalIdAsync(nationalId);
 
             //Assert
-            Assert.Equal(result.NationalId, actualNationalId);
+            if (exptectedFound)
+            {
+                var expectedPerson = People.FirstOrDefault(p => p.NationalId.Contains(nationalId));
+
+                Assert.NotNull(result);
+
+                Assert.Equal(expectedPerson.Family, result.Family);
+                Assert.Equal(expectedPerson.FirstName, result.FirstName);
+                Assert.Equal(expectedPerson.BirthDate, result.BirthDate);
+                Assert.Equal(expectedPerson.NationalId, result.NationalId);
+                Assert.Equal(expectedPerson.Id, result.Id);
+            }
+            else
+            {
+                Assert.Null(result);
+            }
 
         }
 
         #endregion
 
-        #region [-Should_Get_Person_By_TagName(string tagName)-]
+        #region [-Should_Get_Person_By_TagName(bool exptectedFound,string tagName)-]
 
-        [Theory]
-        [AutoData]
-        public async Task Should_Get_Person_By_TagName(string tagName)
-        {
-            //Arrange
-            string actualTagName = null;
-            MockRepository.Setup(m => m.SearchPersonByTagNameAsync(It.IsAny<string>()))
-                .Callback<string>(personTagName => actualTagName = personTagName);
+        //[Theory]
+        //[AutoData]
+        //[InlineAutoData(false)]
+        //[InlineAutoData(true)]
+        //public async Task Should_Get_Person_By_TagName(bool exptectedFound, string tagName)
+        //{
+        //    //Arrange
+        //    MockRepository.Setup(m => m.SearchPersonByTagNameAsync(It.IsAny<string>()))
+        //        .Returns<string>(f => Task.FromResult(People.Where(x => x.Tags.Any(t => t.TagName.Contains(tagName)))));
+        //    if (exptectedFound)
+        //    {
+        //        People.Last(). = "lafskdjlkfsadj ljl lsadfj" + tagName + "lafsdkjlkdsjlfdkjalj";
+        //    }
 
-            var sut = AutoFixture.Create<PersonAppService>();
+        //    var sut = AutoFixture.Create<PersonAppService>();
 
-            //Act
-            await sut.SearchPersonByTagNameAsync(tagName);
+        //    //Act
+        //    var result = await sut.SearchPersonByTagNameAsync(tagName);
 
-            //Assert
-            Assert.Equal(tagName, actualTagName);
+        //    //Assert
+        //    if (exptectedFound)
+        //    {
+        //        var expectedPerson = People.FirstOrDefault(p => p.Tags.Any(t => t.TagName.Contains(tagName)));
+
+        //        Assert.NotNull(result);
+        //        Assert.Equal(expectedPerson.Family, result.Family);
+        //        Assert.Equal(expectedPerson.FirstName, result.FirstName);
+        //        Assert.Equal(expectedPerson.BirthDate, result.BirthDate);
+        //        Assert.Equal(expectedPerson.NationalId, result.NationalId);
+        //        Assert.Equal(expectedPerson.Id, result.Id);
+        //    }
+        //    else
+        //    {
+        //        Assert.Null(result);
+        //    }
 
 
-        }
+        //}
 
         #endregion
 
